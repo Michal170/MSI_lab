@@ -7,7 +7,6 @@ from sklearn.metrics import accuracy_score
 from sklearn.model_selection import StratifiedKFold
 from sklearn.model_selection import KFold
 
-# from sklearn.model_selection import StratifiedKFold
 
 X, y = datasets.make_classification(
     n_samples=400,  # liczba generowanych wzorców
