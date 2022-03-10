@@ -16,20 +16,23 @@ X, y = datasets.make_classification(
     n_redundant=0,  # liczba atrybutów nadmiarowych
     flip_y=.08,  # poziom szumu
     random_state=1410,  # ziarno losowości, pozwala na wygenerowanie dokładnie tego samego zbioru w każdym powtórzeniu
-    n_clusters_per_class=1,  # liczba centroidów, a więc l.skupisk każdej z klas problemu
+    # n_clusters_per_class=1,  # liczba centroidów, a więc l.skupisk każdej z klas problemu
     n_classes=2  # liczba klas problemu
 
 )
 plt.figure(figsize=(5, 2.5))
 plt.scatter(X[:, 0], X[:, 1], marker="o", c=y)
 plt.xlabel("$x^1$")
-plt.xlabel("$x^2$")
+plt.ylabel("$x^2$")
 plt.tight_layout()
 plt.savefig('zad1.jpg')
 plt.show()
+plt.savefig("zad_1.png")
 
+#dodanie kolumny z etykietami
 datasets = np.concatenate((X, y[:, np.newaxis]), axis=1)
 
+#zapis do pliku csv
 np.savetxt(
     "dataset.csv",
     datasets,
@@ -37,30 +40,47 @@ np.savetxt(
     fmt=["%.5f" for i in range(X.shape[1])] + ["%i"]
 )
 
+print(datasets)
 # print(X.shape, y.shape)
 
-# 1.2
+######################################################################################################## 1.2
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1420)
 
 clf = GaussianNB()
 clf.fit(X_train, y_train)
-predict = clf.predict_proba(X_test)
-clf.fit(X_train, y_train)
+
+#wyznaczenie macierzy wsparcia
+cl_probabilities = clf.predict_proba(X_test)
+
+predict = np.argmax(cl_probabilities, axis=1)
+print("Predykcja klasyfikatora:\n", predict)
+
+
+
 score = accuracy_score(y_test, predict)
 print("Accuracy score:\n%.2f" % score)
 
+fig, ax = plt.subplots(1,2,figsize=(5,5))
 
-#1.3
+ax[0].scatter(X_test[:,0],X_test[:,1], c=y_test, cmap="bwr")
 
-skf = StratifiedKFold(n_splits=5)
+ax[1].scatter(X_test[:,0],X_test[:,1], c=predict, cmap="bwr")
+
+
+plt.tight_layout()
+# plt.show()
+###############################################################################1.3
+
+skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=1410)
 scores = []
 
-skf.get_n_splits(X,y)
+# skf.get_n_splits(X,y)
 
-for train_index, test_index in skf.split(X):
+for train_index, test_index in skf.split(X,y):
     X_train, X_test = X[train_index], X[test_index]
     y_train, y_test = y[train_index], y[test_index]
+    clf = GaussianNB()
     clf.fit(X_train, y_train)
     predict = clf.predict(X_test)
     scores.append(accuracy_score(y_test, predict))
@@ -68,4 +88,4 @@ for train_index, test_index in skf.split(X):
 mean_score = np.mean(scores)
 std_score = np.std(scores)
 
-print("Accuracy score:%.3f" % score)
+print("Accuracy score:%.3f (%.3f)" % (mean_score,std_score))
