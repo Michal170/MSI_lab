@@ -7,8 +7,8 @@ from sklearn.metrics import accuracy_score
 from sklearn.model_selection import StratifiedKFold
 
 X, y = datasets.make_classification(
-    n_samples=400,  # liczba generowanych wzorców
     n_features=2,  # liczba atrybutów zbioru
+    n_samples=400,  # liczba generowanych wzorców
     n_informative=2,  # liczba atrybutów informatywnych, tych które zawierają informacje przydatne dla klasyfikacji
     n_repeated=0,  # liczba atrybutów powtórzonych, czyli zduplikowanych kolumn
     n_redundant=0,  # liczba atrybutów nadmiarowych
@@ -16,6 +16,16 @@ X, y = datasets.make_classification(
     random_state=1410,  # ziarno losowości, pozwala na wygenerowanie dokładnie tego samego zbioru w każdym powtórzeniu
     n_classes=2  # liczba klas problemu
 )
+
+datasets = np.concatenate((X, y[:, np.newaxis]), axis=1)  # dodanie kolumny z etykietami
+
+np.savetxt(  # zapis do pliku csv
+    "dataset.csv",
+    datasets,
+    delimiter=",",
+    fmt=["%.5f" for i in range(X.shape[1])] + ["%i"]
+)
+
 
 fig, ax = plt.subplots(1, 1, figsize=(8, 8))
 ax.scatter(X[:, 0], X[:, 1], c=y, cmap="bwr")
@@ -26,14 +36,6 @@ plt.tight_layout()
 plt.show()
 plt.savefig("zad_1.png")
 
-datasets = np.concatenate((X, y[:, np.newaxis]), axis=1)  # dodanie kolumny z etykietami
-
-np.savetxt(  # zapis do pliku csv
-    "dataset.csv",
-    datasets,
-    delimiter=",",
-    fmt=["%.5f" for i in range(X.shape[1])] + ["%i"]
-)
 
 print("Datasets:\n", datasets, "\n")
 # print(X.shape, y.shape)
@@ -45,7 +47,7 @@ clf = GaussianNB()  # gaussowski naiwny klasyfikator
 clf.fit(X_train, y_train)
 
 cl_probabilities = clf.predict_proba(X_test)  # wyznaczenie macierzy wsparcia
-predict = np.argmax(cl_probabilities, axis=1)
+predict = np.argmax(cl_probabilities, axis=1) #predykcja klasyfikatora dla zbioru testowego
 print("Predykcja klasyfikatora:\n", predict)
 print("w. rzeczywiste:\n", y_test, "\n")
 
@@ -60,19 +62,18 @@ ax[0].set_ylabel("Feature 1")
 ax[0].set_title("Etykiety rzeczywiste ")
 
 ax[1].scatter(X_test[:, 0], X_test[:, 1], c=predict, cmap="bwr")
-ax[0].set_xlabel("Feature 0")
-ax[0].set_ylabel("Feature 1")
-ax[0].set_title("Etykiety predykcji")
+ax[1].set_xlabel("Feature 0")
+ax[1].set_ylabel("Feature 1")
+ax[1].set_title("Etykiety predykcji")
 
 plt.tight_layout()
 plt.show()
 
 ######################################### ZADANIE 1.3 #################################################
 
-skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=1410)
+skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=1000)
 scores = []
 
-# skf.get_n_splits(X,y)
 
 for train_index, test_index in skf.split(X, y):
     X_train, X_test = X[train_index], X[test_index]
