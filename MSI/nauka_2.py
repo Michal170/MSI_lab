@@ -42,18 +42,4 @@ print("Accuracy score: \n%.2f" % score)
 
 
 
-# skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=1000)
-# scores = []
-#
-# for train_index, test_idex in skf.split(X,y):
-#     X_train, X_test = X[train_index], X[test_idex]
-#     y_train, y_test = y[train_index], y[test_idex]
-#     clf = GaussianNB()
-#     clf.fit(X_train,y_train)
-#     predict = clf.predict(X_test)
-#     scores.append(accuracy_score(y_test, predict))
-#
-# mean_score = np.mean(scores)
-# std_score = np.std(scores)
-#
-# print("Accuracy score:%.3f, (%3.f)" %(mean_score, std_score))
+
