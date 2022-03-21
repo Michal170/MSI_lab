@@ -28,9 +28,13 @@ class RandomClassifier(BaseEstimator,ClassifierMixin):
 
 
 X, y = datasets.make_classification(
-    # n_features=2,
-    n_samples=200,
-    n_informative=2,
+    n_features=2,  # liczba atrybutów zbioru
+    n_samples=200,  # liczba generowanych wzorców
+    n_informative=2,  # liczba atrybutów informatywnych, tych które zawierają informacje przydatne dla klasyfikacji
+    n_repeated=0,  # liczba atrybutów powtórzonych, czyli zduplikowanych kolumn
+    n_redundant=0,  # liczba atrybutów nadmiarowych
+    random_state=1410,  # ziarno losowości, pozwala na wygenerowanie dokładnie tego samego zbioru w każdym powtórzeniu
+    n_classes=2,  # liczba klas problemu
 )
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1234)
 
