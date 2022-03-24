@@ -19,6 +19,7 @@ from sklearn.utils.multiclass import unique_labels
 from prettytable import PrettyTable
 
 ############################################ZAD 2.1 ####################################################################
+print("Zadanie 2.1:")
 
 class RandomClassifier(BaseEstimator,ClassifierMixin):
 
@@ -83,6 +84,7 @@ score= accuracy_score(y_test,predict)
 print("Accuracy score: \n%.2f" % score)
 
 ############################################ZAD 2.2 ####################################################################
+print("\nZadanie 2.2")
 
 class NeighborClassifier(BaseEstimator,ClassifierMixin):
 
@@ -134,7 +136,7 @@ print("Accuracy score own neighbors algorithm: \n%.2f" % score_neighbour)
 print("Accuracy score Kneighbors algorithm: \n%.2f" % score_Kneighbour)
 
 ############################################ZAD 2.3 ####################################################################
-
+print("\nZadanie 2.3")
 
 Moons = make_moons()
 Circles = make_circles()
