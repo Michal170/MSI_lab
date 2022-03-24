@@ -122,6 +122,7 @@ class NeighborClassifier(BaseEstimator,ClassifierMixin):
             self.y_pred.append(self.y_[ix])
         return self.y_pred
 
+
 clf_2 = NeighborClassifier()
 clf_2.fit(X_train,y_train)
 predict_2 = clf_2.predict(X_test)
@@ -138,24 +139,17 @@ print("Accuracy score Kneighbors algorithm: \n%.2f" % score_Kneighbour)
 ############################################ZAD 2.3 ####################################################################
 print("\nZadanie 2.3")
 
-Moons = make_moons()
-Circles = make_circles()
-Blobs = make_blobs()
-
 n_splits = 2
 n_repeats = 5
 
 rskf = RepeatedStratifiedKFold(n_splits=n_splits,n_repeats=n_repeats, random_state=1234)
 
-
 random = RandomClassifier()
 neighbour = NeighborClassifier()
 
 temp = [random, neighbour]
-data_sets = [Moons,Circles,Blobs]
 data_name = ["Moons","Circles","Blobs" ]
-scores = []
-
+data_sets = [make_moons(),make_circles(),make_blobs()]
 
 tabel_mean = []
 tabel_std = []
@@ -165,6 +159,7 @@ for g in range(0,2):
         tmp = data_sets[o]
         X = tmp[0]
         y = tmp[1]
+        scores = []
         for train_index, test_index in rskf.split(X, y):
             X_train, X_test = X[train_index], X[test_index]
             y_train, y_test = y[train_index], y[test_index]
@@ -172,9 +167,9 @@ for g in range(0,2):
             clf.fit(X_train, y_train)
             predict = clf.predict(X_test)
             scores.append(accuracy_score(y_test, predict))
-            mean_score = np.mean(scores)
-
-            std_score = np.std(scores)
+        mean_score = np.mean(scores)
+        std_score = np.std(scores)
+        # print(temp[g], data_name[o])
         tabel_std.append(round(std_score,3))
         tabel_mean.append(round(mean_score, 3))
         # print(f"Accuracy score {data_name[o]} {temp[g]}: %.3f,  (%.3f)" % (mean_score, std_score))
@@ -194,4 +189,5 @@ for i in range(0,3):
     kk=i+3
     pp.add_row([data_name[i],tabel_std[i],tabel_std[kk]])
 print(pp)
+
 
