@@ -49,7 +49,6 @@ std = np.std(scores, axis=1)
 for clf_id, clf_name in enumerate(clfs):
     print("%s: %.3f (%.2f)" % (clf_name, mean[clf_id], std[clf_id]))
 
-
 #########################ZADANIE 3.2####################################
 
 scores_2 = np.zeros((len(clfs), n_splits * n_repeats))
@@ -69,7 +68,6 @@ std = np.std(scores_2, axis=1)
 print("==================================\nZadanie nr 2:")
 for clf_id, clf_name in enumerate(clfs):
     print("%s: %.3f (%.2f)" % (clf_name, mean[clf_id], std[clf_id]))
-
 
 ############################# ZADANIE 3.3 ##################################33
 
