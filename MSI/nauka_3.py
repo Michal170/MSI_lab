@@ -38,8 +38,6 @@ scores = np.zeros((len(clfs), n_splits * n_repeats))
 
 for fold_id, (train, test) in enumerate(rskf.split(X, y)):
     for clf_id, clf_name in enumerate(clfs):
-
-
         clfs[clf_name].fit(X[train], y[train])
         y_pred = clfs[clf_name].predict(X[test])
         scores[clf_id, fold_id] = accuracy_score(y[test], y_pred)
