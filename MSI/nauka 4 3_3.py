@@ -34,13 +34,19 @@ p_value = np.zeros((len(clfs), len(clfs)))
 scores = np.load('results.npy')
 print("\nScores:\n", scores.shape)
 
-for data_id, dataset in enumerate(datasets):
-    table_ = scores[:, data_id, :]
+# for data_id, dataset in enumerate(datasets):
+#     table_ = scores[:, data_id, :]
+
+# mean_scores = np.mean(scores, axis=2).T
+mean_scores = np.mean(scores, axis=2)
+
+print(mean_scores.shape)
 
 
 for i in range(len(clfs)):
     for j in range(len(clfs)):
-        t_statistic[i, j], p_value[i, j] = ttest_rel(table_[i], table_[j])
+        # t_statistic[i, j], p_value[i, j] = ttest_rel(table_[i], table_[j])
+        t_statistic[i, j], p_value[i, j] = ttest_rel(mean_scores[i], mean_scores[j])
 
 
 headers = ["GNB", "kNN", 'SVC',"CART",]
@@ -70,7 +76,7 @@ stat_better_table = tabulate(np.concatenate((names_column, advantage), axis=1), 
 print("Tabela końcowych obserwacji:\n", stat_better_table)
 
 
-mean_scores = np.mean(scores, axis=2).T
+# mean_scores = np.mean(scores, axis=2).T
 
 ranks = []
 for i in mean_scores:

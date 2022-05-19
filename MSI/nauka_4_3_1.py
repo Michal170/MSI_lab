@@ -15,11 +15,6 @@ X,y = datasets.make_classification(
 
 )
 
-# vector = np.random.normal(size=20)
-# X = X * vector
-
-
-
 clfs = {
     'GNB': GaussianNB(),
     'kNN': KNeighborsClassifier(),
@@ -59,8 +54,3 @@ for data_id, dataset in enumerate(datasets):
             scores[clf_id,data_id, fold_id] = accuracy_score(y[test], y_pred)
 
 np.save('results', scores)
-    # mean = np.mean(scores, axis=1)
-    # std = np.std(scores, axis=1)
-    # print("Zadanie 1:\n")
-    # for clf_id, clf_name in enumerate(clfs):
-    #     print("%s: %.3f (%.3f)" % (clf_name, mean[clf_id], std[clf_id]))
